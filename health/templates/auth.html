@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindfulCare</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+            <h2 class="text-2xl font-bold mb-6 text-center">
+                {% if isLogin %}Sign In{% else %}Register{% endif %}
+            </h2>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                <div class="mb-4">
+                    <label class="block text-sm mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" 
+                    class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    {% if isLogin %}Sign In{% else %}Register{% endif %}
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                {% if isLogin %}
+                    <a href="{% url 'register' %}" class="text-blue-500">Create new account</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-blue-500">Already have an account?</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
