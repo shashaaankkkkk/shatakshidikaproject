@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import StudentForm, MentalHealthAssessmentForm, AppointmentForm
 from .models import Student, MentalHealthAssessment, Appointment
 from datetime import datetime, timedelta
+from django.contrib.auth import logout
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
@@ -22,7 +23,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('student_form')
+            return redirect('/')
     else:
         form = AuthenticationForm()
     return render(request, 'auth.html', {'form': form, 'isLogin': True})
@@ -50,7 +51,7 @@ def student_form(request):
     else:
         form = StudentForm()
     return render(request, 'student_form.html', {'form': form})
-
+@login_required
 def home(request):
     if request.user.is_authenticated:
         try:
@@ -151,3 +152,6 @@ def assign_counselor():
     counselors = ['Dr.Shatakshi Singh',"Dr.Anshul Singh Chauhan",'Dr. Ashish Kushwaha',"Dr. Anjali Singh"]
     from random import choice
     return choice(counselors)
+def custom_logout(request):
+    logout(request)  # Log out the user
+    return redirect('home')
