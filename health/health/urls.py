@@ -17,15 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from app import views as app
+from app import views as views
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('login/', app.login_view, name='login'),
-    path('register/', app.register_view, name='register'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
-    path("home",app.home,name='home'),
-    path('', app.student_form, name='student_form'),
-    path('success/', app.success, name='success'),
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('', views.home, name='home'),
+    path('student-form/', views.student_form, name='student_form'),
+    path('assessment/', views.assessment, name='assessment'),
+    path('schedule-appointment/', views.schedule_appointment, name='schedule_appointment'),
+    path('appointment-confirmation/', views.appointment_confirmation, name='appointment_confirmation'),
 ]

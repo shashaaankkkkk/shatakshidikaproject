@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Mental Health Assessment</title>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Mental Health Assessment</h2>
+            <p class="text-gray-600 mb-8">Please answer these questions honestly to help us better understand your needs.</p>
+            
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-lg font-medium mb-3">{{ field.label }}</label>
+                        {% if field.field.widget.input_type == "radio" %}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {% for choice in field %}
+                                    <label class="flex items-center space-x-3 p-4 border rounded-lg hover:bg-gray-50">
+                                        {{ choice }}
+                                        <span class="text-gray-700">{{ choice.choice_label }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        {% elif field.field.widget.input_type == "checkbox" %}
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" name="{{ field.name }}" class="h-5 w-5 text-indigo-600">
+                                <span class="ml-2 text-gray-700">Yes</span>
+                            </label>
+                        {% else %}
+                            <input type="{{ field.field.widget.input_type }}" 
+                                   name="{{ field.name }}" 
+                                   class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                   {% if field.field.required %}required{% endif %}>
+                        {% endif %}
+                        {% if field.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Continue to Scheduling
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

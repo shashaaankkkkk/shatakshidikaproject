@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Schedule Appointment - Mental Health Support</title>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Schedule Your Appointment</h2>
+            <p class="text-gray-600 mb-8">Choose a convenient time for your consultation.</p>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Available Time Slots</h3>
+                        <div class="space-y-2">
+                            {% for slot in available_slots %}
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="time_slot" value="{{ slot|date:'Y-m-d H:i' }}"
+                                           class="form-radio h-4 w-4 text-indigo-600">
+                                    <span class="ml-3">
+                                        <span class="block text-sm font-medium text-gray-900">
+                                            {{ slot|date:"l, F j" }}
+                                        </span>
+                                        <span class="block text-sm text-gray-500">
+                                            {{ slot|date:"g:i A" }}
+                                        </span>
+                                    </span>
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Appointment Details</h3>
+                        {% for field in form %}
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">
+                                    {{ field.label }}
+                                </label>
+                                <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                                       name="{{ field.name }}"
+                                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
+                                       {% if field.field.required %}required{% endif %}>
+                                {% if field.errors %}
+                                    <p class="mt-2 text-sm text-red-600">{{ field.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-8">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Confirm Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
