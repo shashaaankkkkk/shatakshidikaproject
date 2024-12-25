@@ -29,4 +29,5 @@ urlpatterns = [
     path('assessment/', views.assessment, name='assessment'),
     path('schedule-appointment/', views.schedule_appointment, name='schedule_appointment'),
     path('appointment-confirmation/', views.appointment_confirmation, name='appointment_confirmation'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
 ]

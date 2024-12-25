@@ -36,6 +36,11 @@ class MentalHealthAssessment(models.Model):
     academic_impact = models.IntegerField(choices=SEVERITY_CHOICES)
     additional_notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f" {self.student}"
+
+
 
 class Appointment(models.Model):
     STATUS_CHOICES = [
@@ -52,3 +57,7 @@ class Appointment(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Appointment with {self.counselor} for {self.student} on {self.appointment_date.strftime('%Y-%m-%d %H:%M')} ({self.get_status_display()})"
+

@@ -1,4 +1,3 @@
 from django.contrib import admin
-from .models import Student
-# Register your models here.
-admin.site.register(Student)
+from .models import Student , MentalHealthAssessment , Appointment
+admin.site.register([Student,MentalHealthAssessment,Appointment])

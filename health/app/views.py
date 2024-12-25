@@ -15,6 +15,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
+from django.utils.timezone import now
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -51,7 +52,22 @@ def student_form(request):
     return render(request, 'student_form.html', {'form': form})
 
 def home(request):
-    return render(request,"index.html")
+    if request.user.is_authenticated:
+        try:
+            # Fetch the Student instance associated with the logged-in user
+            student = Student.objects.get(user=request.user)
+            # Fetch upcoming appointments for this student
+            upcoming_appointments = Appointment.objects.filter(
+                student=student,
+                appointment_date__gte=now()
+            ).order_by('appointment_date')
+        except Student.DoesNotExist:
+            # Handle case where no Student is associated with the user
+            upcoming_appointments = None
+    else:
+        upcoming_appointments = None
+
+    return render(request, 'index.html', {'upcoming_appointments': upcoming_appointments})
 
 @login_required
 def student_form(request):
@@ -132,6 +148,6 @@ def generate_time_slots():
 def assign_counselor():
     """Implement counselor assignment logic"""
     # This is a placeholder - you'll need to implement your own logic
-    counselors = ['Dr. Smith', 'Dr. Johnson', 'Dr. Williams']
+    counselors = ['Dr.Shatakshi Singh',"Dr.Anshul Singh Chauhan",'Dr. Ashish Kushwaha',"Dr. Anjali Singh"]
     from random import choice
     return choice(counselors)
