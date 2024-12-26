@@ -4,17 +4,10 @@ from django.contrib import messages
 from .forms import StudentForm, MentalHealthAssessmentForm, AppointmentForm
 from .models import Student, MentalHealthAssessment, Appointment
 from datetime import datetime, timedelta
-from django.contrib.auth import logout
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate , logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.decorators import login_required
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.decorators import login_required
 
 from django.utils.timezone import now
 def login_view(request):
