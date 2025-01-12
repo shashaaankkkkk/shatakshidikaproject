@@ -1,15 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404  # type: ignore
+from django.contrib.auth.decorators import login_required # type: ignore
+from django.contrib import messages # type: ignore
 from .forms import StudentForm, MentalHealthAssessmentForm, AppointmentForm
 from .models import Student, MentalHealthAssessment, Appointment
 from datetime import datetime, timedelta
+from django.contrib.auth import login, authenticate , logout # type: ignore
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm # type: ignore
+from django.utils.timezone import now # type: ignore
 
-from django.contrib.auth import login, authenticate , logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
-
-from django.utils.timezone import now
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
